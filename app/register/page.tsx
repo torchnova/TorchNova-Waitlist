@@ -18,7 +18,11 @@ export default function RegisterPage() {
       <main className="hero" style={{ alignItems: "start" }}>
         {/* LEFT: pitch */}
         <section>
-          <div className="kicker">Built for founders · Launching soon</div>
+          <div className="kicker">
+            <span>Built for founders</span>
+            <span className="kicker-rule" aria-hidden="true" />
+            <span>Launching soon</span>
+          </div>
           <h1 className="headline">Claim your spot.</h1>
           <p className="subhead">
             Create your TORCHNOVA account and lock in early access. We&apos;ll

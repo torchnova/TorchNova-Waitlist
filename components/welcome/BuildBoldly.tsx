@@ -22,9 +22,9 @@ export function BuildBoldly() {
         opacity: 1,
         y: 0,
         textShadow: [
-          "0 0 0px rgba(234,106,44,0)",
-          "0 0 12px rgba(234,106,44,0.38)",
-          "0 0 0px rgba(234,106,44,0)",
+          "0 0 0px rgba(233,133,79,0)",
+          "0 0 12px rgba(233,133,79,0.38)",
+          "0 0 0px rgba(233,133,79,0)",
         ],
       }}
       transition={{

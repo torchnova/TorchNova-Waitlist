@@ -6,7 +6,8 @@ import { useTypewriter } from "@/hooks/useTypewriter";
 const SNIPPETS = [
   "Build in public.",
   "Find your co-founder.",
-  "Get advice from founders who've done it.",
+  "Let AI handle the busywork.",
+  "Learn from founders who've been there.",
   "Get on investors' radar early.",
 ];
 

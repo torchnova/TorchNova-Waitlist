@@ -13,7 +13,7 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "TorchNova — Join the waitlist",
   description:
-    "TORCHNOVA is the private network where founders trade intros, unblock each other, and hand off the ideas they're not chasing. Early access opens soon.",
+    "TorchNova is the platform where founders find their people, run their team, and let built-in AI handle the busywork. Early access opens soon.",
   icons: {
     icon: "/torchnova-logo-icon.svg",
     shortcut: "/torchnova-logo-icon.svg",
@@ -25,7 +25,7 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   colorScheme: "light",
-  themeColor: "#f6f7f9",
+  themeColor: "#f3f1e8",
 };
 
 export default function RootLayout({
