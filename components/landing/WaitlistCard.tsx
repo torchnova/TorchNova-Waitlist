@@ -85,6 +85,9 @@ export function WaitlistCard() {
         </div>
         <button className="cta" type="submit">
           Join the waitlist
+          <span className="cta-arrow" aria-hidden="true">
+            →
+          </span>
         </button>
         <p className="microcopy">
           No noise. Just your invite the day we open.
