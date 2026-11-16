@@ -46,8 +46,8 @@ export default function TermsPage() {
 
       <h2>3. Your submission</h2>
       <p>
-        When you join, you provide a username, your name, email address, and an
-        optional role. You are responsible for the information you submit and for
+        When you join, you provide a username, your name, and your email
+        address. You are responsible for the information you submit and for
         keeping your email address current so we can reach you.
       </p>
 

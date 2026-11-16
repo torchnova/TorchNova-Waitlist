@@ -1,18 +1,9 @@
-export const ROLES = ["FOUNDER", "INVESTOR"] as const;
-export type Role = (typeof ROLES)[number];
-
-export const ROLE_LABELS: Record<Role, string> = {
-  FOUNDER: "Founder",
-  INVESTOR: "Investor",
-};
-
 /** Shape of the registration form as the user fills it in. */
 export interface RegisterFormValues {
   username: string;
   firstName: string;
   lastName: string;
   email: string;
-  role?: Role | "";
   agreeToTerms: boolean;
 }
 
