@@ -14,8 +14,7 @@ production-ready full-stack app.
 - **Next.js API Routes** for the backend
 - **Resend** for the welcome/confirmation email, **Zod** for validation
 
-The waitlist collects **email, username, first and last name, and an optional
-role** — no passwords are stored.
+The waitlist collects **email, username, and first and last name** — no passwords are stored.
 
 ## Getting started
 
@@ -66,7 +65,7 @@ components/
 hooks/useTypewriter.ts    Typewriter loop for the rotating hero line
 lib/                      prisma client, zod validation, email (Resend)
 lib/emails/               welcome-template.ts (dark + flame confirmation email)
-prisma/schema.prisma      User model + Role enum
+prisma/schema.prisma      User model (legacy optional Role column, no longer collected)
 types/                    Shared types
 ```
 
@@ -74,8 +73,7 @@ types/                    Shared types
 
 - `/` — landing page. The "Join the waitlist" CTA routes to `/register`,
   prefilling the first name / email the visitor already typed.
-- `/register` — registration form (username, name, email, optional role,
-  terms). Validates client- and server-side.
+- `/register` — registration form (username, name, email, terms). Validates client- and server-side.
 - `/welcome` — success page.
 - `POST /api/register` — creates the user, enforces unique email/username,
   sends the welcome email, and returns typed success/error responses.

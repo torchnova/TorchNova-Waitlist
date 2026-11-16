@@ -90,7 +90,6 @@ export async function POST(request: Request): Promise<NextResponse<RegisterRespo
         firstName: data.firstName,
         lastName: data.lastName,
         email: data.email,
-        role: data.role ?? null,
       },
       select: {
         id: true,

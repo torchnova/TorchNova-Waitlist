@@ -4,7 +4,6 @@ import { useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Field } from "@/components/ui/Field";
 import { registerSchema } from "@/lib/validation";
-import { ROLES, ROLE_LABELS } from "@/types";
 import type { RegisterFormValues, RegisterResponse } from "@/types";
 
 type FieldErrors = Partial<Record<keyof RegisterFormValues, string>>;
@@ -14,7 +13,6 @@ const EMPTY: RegisterFormValues = {
   firstName: "",
   lastName: "",
   email: "",
-  role: "",
   agreeToTerms: false,
 };
 
@@ -48,10 +46,7 @@ export function RegisterForm() {
     setFormError(null);
 
     // Client-side validation with the shared schema for instant feedback.
-    const parsed = registerSchema.safeParse({
-      ...values,
-      role: values.role || undefined,
-    });
+    const parsed = registerSchema.safeParse(values);
 
     if (!parsed.success) {
       const next: FieldErrors = {};
@@ -161,24 +156,6 @@ export function RegisterForm() {
         onChange={(e) => update("email", e.target.value)}
         error={errors.email}
       />
-
-      <div className="field">
-        <label htmlFor="role">Role (optional)</label>
-        <select
-          id="role"
-          value={values.role}
-          onChange={(e) =>
-            update("role", e.target.value as RegisterFormValues["role"])
-          }
-        >
-          <option value="">Select a role…</option>
-          {ROLES.map((role) => (
-            <option key={role} value={role}>
-              {ROLE_LABELS[role]}
-            </option>
-          ))}
-        </select>
-      </div>
 
       <div className="checkbox">
         <input

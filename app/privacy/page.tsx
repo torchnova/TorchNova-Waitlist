@@ -28,7 +28,6 @@ export default function PrivacyPage() {
         <li>Your username</li>
         <li>Your first and last name</li>
         <li>Your email address</li>
-        <li>Your role (founder or investor)</li>
         <li>The date and time you joined</li>
       </ul>
       <p>

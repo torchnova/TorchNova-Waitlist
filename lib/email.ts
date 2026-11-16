@@ -1,5 +1,9 @@
 import { Resend } from "resend";
-import { welcomeEmailHtml, welcomeEmailText } from "@/lib/emails/welcome-template";
+import {
+  WELCOME_SUBJECT,
+  welcomeEmailHtml,
+  welcomeEmailText,
+} from "@/lib/emails/welcome-template";
 import { LOGO_BASE64, LOGO_CID, LOGO_FILENAME } from "@/lib/emails/logo";
 
 // Instantiate lazily/conditionally so the app runs fine without a key set —
@@ -50,7 +54,7 @@ export async function sendWelcomeEmail({
     const { error } = await resend.emails.send({
       from: FROM,
       to,
-      subject: "Welcome to TORCHNOVA — you're on the list",
+      subject: WELCOME_SUBJECT,
       html: welcomeEmailHtml({ firstName, siteUrl: SITE_URL, unsubscribeUrl }),
       text: welcomeEmailText({ firstName, siteUrl: SITE_URL, unsubscribeUrl }),
       // Inline logo — referenced as cid:LOGO_CID in the HTML above.

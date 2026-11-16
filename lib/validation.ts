@@ -1,5 +1,4 @@
 import { z } from "zod";
-import { ROLES } from "@/types";
 
 /**
  * Shared email rule — also used on its own by the landing-page card, which
@@ -35,7 +34,6 @@ export const registerSchema = z.object({
     .min(1, "Last name is required")
     .max(50, "Last name is too long"),
   email: emailSchema,
-  role: z.enum(ROLES).optional(),
   // Single checkbox covering both the Terms and consent to receive our emails.
   agreeToTerms: z.literal(true, {
     errorMap: () => ({
