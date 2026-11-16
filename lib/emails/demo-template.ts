@@ -8,7 +8,7 @@ import { prettyPhone } from "@/lib/phone";
  * renders the same everywhere). Table layout + inline styles throughout —
  * email clients ignore CSS variables and most <style> blocks.
  */
-const BG = "#f0f0f0";
+const BG = "#e9eee7";
 const INK = "#0f0f0f";
 const INK_2 = "#5c5c5c";
 const RULE = "#d6d6d6";

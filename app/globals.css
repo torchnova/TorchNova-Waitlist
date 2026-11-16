@@ -8,7 +8,11 @@
  * Hierarchy from size and position only.
  * ------------------------------------------------------------------ */
 :root {
-  --light: #f0f0f0;
+  --light: #e9eee7; /* a breath of the app's sage paper (#e9eee5) */
+  /* the app's light-mode hues, used only as faint washes in empty space */
+  --sky: 184, 208, 200; /* #b8d0c8 */
+  --water: 124, 169, 157; /* #7ca99d */
+  --pink: 233, 64, 129; /* #e94081, the app's accent — used as a blush only */
   --ink: #0f0f0f;
   --ink-2: #5c5c5c;
   --dark: #111111;
@@ -1193,4 +1197,172 @@ html.lenis {
 }
 .message .page-title {
   font-weight: 600;
+}
+
+/* ------------------------------------------------------------------ *
+ * Hue: soft washes of the app's sky + water that drift slowly through
+ * the empty space of light sections. They sit behind content and stay
+ * inside their section (overflow: clip keeps sticky children working).
+ * ------------------------------------------------------------------ */
+.hero,
+.statement-stage,
+.contact,
+.page-top {
+  position: relative;
+  isolation: isolate;
+  overflow: clip;
+}
+.hero,
+.contact {
+  overflow-x: clip;
+  overflow-y: visible;
+}
+.statement-stage {
+  position: sticky;
+}
+.hero::before,
+.hero::after,
+.statement-stage::before,
+.statement-stage::after,
+.contact::before,
+.contact::after,
+.page-top::before,
+.page-top::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  border-radius: 50%;
+  pointer-events: none;
+  will-change: transform;
+}
+/* hero: sky under the lede, water at the far left */
+.hero::before {
+  width: 62vw;
+  height: 62vw;
+  right: -14vw;
+  top: 4%;
+  background: radial-gradient(closest-side, rgba(var(--sky), 0.66), rgba(var(--sky), 0.22) 55%, transparent);
+  animation: drift-a 34s ease-in-out infinite;
+}
+.hero::after {
+  width: 46vw;
+  height: 46vw;
+  left: -16vw;
+  top: 16%;
+  background: radial-gradient(closest-side, rgba(var(--pink), 0.13), rgba(var(--pink), 0.04) 55%, transparent);
+  animation: drift-b 41s ease-in-out infinite;
+}
+.statement-stage::before {
+  width: 52vw;
+  height: 52vw;
+  left: -12vw;
+  top: 30%;
+  background: radial-gradient(closest-side, rgba(var(--sky), 0.48), rgba(var(--sky), 0.16) 55%, transparent);
+  animation: drift-b 38s ease-in-out infinite;
+}
+.statement-stage::after {
+  width: 40vw;
+  height: 40vw;
+  right: 2vw;
+  top: 4%;
+  background: radial-gradient(closest-side, rgba(var(--pink), 0.11), rgba(var(--pink), 0.035) 55%, transparent);
+  animation: drift-c 43s ease-in-out infinite;
+}
+.contact::before {
+  width: 46vw;
+  height: 46vw;
+  left: -14vw;
+  top: 8%;
+  background: radial-gradient(closest-side, rgba(var(--sky), 0.6), rgba(var(--sky), 0.2) 55%, transparent);
+  animation: drift-a 36s ease-in-out infinite;
+}
+.contact::after {
+  width: 42vw;
+  height: 42vw;
+  right: -10vw;
+  top: 6%;
+  background: radial-gradient(closest-side, rgba(var(--pink), 0.13), rgba(var(--pink), 0.04) 55%, transparent);
+  animation: drift-c 44s ease-in-out infinite;
+}
+.page-top::before {
+  width: 44vw;
+  height: 44vw;
+  right: -10vw;
+  bottom: 6%;
+  background: radial-gradient(closest-side, rgba(var(--sky), 0.55), rgba(var(--sky), 0.18) 55%, transparent);
+  animation: drift-c 37s ease-in-out infinite;
+}
+.page-top::after {
+  width: 40vw;
+  height: 40vw;
+  left: -14vw;
+  top: 4%;
+  background: radial-gradient(closest-side, rgba(var(--pink), 0.11), rgba(var(--pink), 0.035) 55%, transparent);
+  animation: drift-b 42s ease-in-out infinite;
+}
+@keyframes drift-a {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  33% { transform: translate3d(-9vw, -6vh, 0) scale(1.08); }
+  66% { transform: translate3d(-3vw, 7vh, 0) scale(0.94); }
+}
+@keyframes drift-b {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  40% { transform: translate3d(8vw, -8vh, 0) scale(1.1); }
+  75% { transform: translate3d(3vw, 6vh, 0) scale(0.95); }
+}
+@keyframes drift-c {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  30% { transform: translate3d(-6vw, -10vh, 0) scale(1.06); }
+  70% { transform: translate3d(5vw, -3vh, 0) scale(0.96); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero::before,
+  .hero::after,
+  .statement-stage::before,
+  .statement-stage::after,
+  .contact::before,
+  .contact::after,
+  .page-top::before,
+  .page-top::after {
+    animation: none;
+  }
+}
+
+/* The faintest pink in the dark: two slow blushes in the empty margins
+ * of the dark content (right of Philosophy, left of Principles). */
+.dark {
+  position: relative;
+  isolation: isolate;
+  overflow-x: clip;
+}
+.dark::before,
+.dark::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  border-radius: 50%;
+  pointer-events: none;
+  will-change: transform;
+}
+.dark::before {
+  width: 48vw;
+  height: 48vw;
+  right: -18vw;
+  top: 6%;
+  background: radial-gradient(closest-side, rgba(var(--pink), 0.075), rgba(var(--pink), 0.025) 55%, transparent);
+  animation: drift-a 46s ease-in-out infinite;
+}
+.dark::after {
+  width: 44vw;
+  height: 44vw;
+  left: -20vw;
+  top: 66%;
+  background: radial-gradient(closest-side, rgba(var(--pink), 0.065), rgba(var(--pink), 0.02) 55%, transparent);
+  animation: drift-b 52s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .dark::before,
+  .dark::after {
+    animation: none;
+  }
 }

@@ -34,6 +34,8 @@ export function Motion() {
     items.forEach((el) => io.observe(el));
 
     const lenis = new Lenis({ duration: 1.25 });
+    // Reloads open at the top (unless the URL targets a section).
+    if (!location.hash) lenis.scrollTo(0, { immediate: true, force: true });
     let raf = 0;
     const loop = (t: number) => {
       lenis.raf(t);

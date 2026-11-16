@@ -35,12 +35,22 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   colorScheme: "light",
-  themeColor: "#f0f0f0",
+  themeColor: "#e9eee7",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={inter.variable}>
+      <head>
+        {/* Start every load at the top so the opening animation is seen —
+            the browser would otherwise restore the previous scroll position. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "try{history.scrollRestoration='manual';if(!location.hash)window.scrollTo(0,0)}catch(e){}",
+          }}
+        />
+      </head>
       <body>{children}</body>
     </html>
   );
