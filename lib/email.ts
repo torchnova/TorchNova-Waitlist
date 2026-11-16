@@ -1,88 +1,70 @@
 import { Resend } from "resend";
 import {
-  WELCOME_SUBJECT,
-  welcomeEmailHtml,
-  welcomeEmailText,
-} from "@/lib/emails/welcome-template";
-import { LOGO_BASE64, LOGO_CID, LOGO_FILENAME } from "@/lib/emails/logo";
+  DEMO_CONFIRM_SUBJECT,
+  demoConfirmHtml,
+  demoConfirmText,
+  demoNotifyText,
+} from "@/lib/emails/demo-template";
+import type { DemoRequestInput } from "@/lib/validation";
+import { publicUrl } from "@/lib/site";
 
-// Instantiate lazily/conditionally so the app runs fine without a key set —
-// registration must never fail just because email isn't configured.
+// Conditional so the site runs fine without a key — a demo request must never
+// fail just because email isn't configured.
 const apiKey = process.env.RESEND_API_KEY;
 const resend = apiKey ? new Resend(apiKey) : null;
 
-const FROM = process.env.EMAIL_FROM ?? "TORCHNOVA <onboarding@resend.dev>";
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
-
-export interface SendResult {
-  ok: boolean;
-  /** True when email is intentionally skipped (no API key configured). */
-  skipped?: boolean;
-  error?: string;
-}
-
-interface WelcomeEmailArgs {
-  to: string;
-  firstName: string;
-  /** Opaque token used to build the one-click unsubscribe link. */
-  unsubscribeToken: string;
-}
+const FROM = process.env.EMAIL_FROM ?? "TorchNova <onboarding@resend.dev>";
+// Emails always point at the public site, never a local dev address.
+const SITE_URL = publicUrl();
+/** Team inbox that receives each new request. Optional. */
+const NOTIFY_TO = process.env.DEMO_NOTIFY_EMAIL?.trim() || null;
 
 /**
- * Sends the welcome / confirmation email. Never throws — any failure is logged
- * and returned so the caller can decide what to do (registration proceeds
- * regardless of email outcome).
+ * Sends the requester's confirmation and, if configured, the internal
+ * notification. Never throws — failures are logged and swallowed.
  */
-export async function sendWelcomeEmail({
-  to,
-  firstName,
-  unsubscribeToken,
-}: WelcomeEmailArgs): Promise<SendResult> {
+export async function sendDemoEmails(
+  data: DemoRequestInput,
+  { confirm = true }: { confirm?: boolean } = {},
+): Promise<void> {
   if (!resend) {
-    console.warn(
-      "[email] RESEND_API_KEY not set — skipping welcome email to",
-      to,
-    );
-    return { ok: false, skipped: true };
+    console.warn("[email] RESEND_API_KEY not set — skipping demo emails for", data.email);
+    return;
   }
 
-  const unsubscribeUrl = `${SITE_URL}/unsubscribe?token=${encodeURIComponent(
-    unsubscribeToken,
-  )}`;
+  const jobs: Promise<unknown>[] = [];
+  if (confirm) {
+    const receivedAt = new Date();
+    jobs.push(
+      resend.emails.send({
+        from: FROM,
+        to: data.email,
+        subject: DEMO_CONFIRM_SUBJECT,
+        html: demoConfirmHtml({ data, siteUrl: SITE_URL, receivedAt }),
+        text: demoConfirmText({ data, siteUrl: SITE_URL, receivedAt }),
+      }),
+    );
+  }
 
-  try {
-    const { error } = await resend.emails.send({
-      from: FROM,
-      to,
-      subject: WELCOME_SUBJECT,
-      html: welcomeEmailHtml({ firstName, siteUrl: SITE_URL, unsubscribeUrl }),
-      text: welcomeEmailText({ firstName, siteUrl: SITE_URL, unsubscribeUrl }),
-      // Inline logo — referenced as cid:LOGO_CID in the HTML above.
-      attachments: [
-        {
-          filename: LOGO_FILENAME,
-          content: LOGO_BASE64,
-          contentType: "image/png",
-          contentId: LOGO_CID,
-        },
-      ],
-      // Improves deliverability + satisfies bulk-sender / CAN-SPAM expectations.
-      headers: {
-        "List-Unsubscribe": `<${unsubscribeUrl}>`,
-        "List-Unsubscribe-Post": "List-Unsubscribe=One-Click",
-      },
-    });
+  if (NOTIFY_TO) {
+    jobs.push(
+      resend.emails.send({
+        from: FROM,
+        to: NOTIFY_TO,
+        replyTo: data.email,
+        subject: `Demo request — ${data.organization} (${data.firstName} ${data.lastName})`,
+        text: demoNotifyText(data),
+      }),
+    );
+  }
 
-    if (error) {
-      console.error("[email] Resend returned an error:", error);
-      return { ok: false, error: error.message };
+  const results = await Promise.allSettled(jobs);
+  for (const r of results) {
+    if (r.status === "rejected") {
+      console.error("[email] demo email failed:", r.reason);
+    } else {
+      const { error } = r.value as { error?: { message: string } | null };
+      if (error) console.error("[email] Resend returned an error:", error);
     }
-    return { ok: true };
-  } catch (err) {
-    console.error("[email] failed to send welcome email:", err);
-    return {
-      ok: false,
-      error: err instanceof Error ? err.message : "Unknown email error",
-    };
   }
 }

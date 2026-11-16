@@ -1,30 +1,23 @@
-/** Shape of the registration form as the user fills it in. */
-export interface RegisterFormValues {
-  username: string;
+/** Shape of the demo-request form as the visitor fills it in. */
+export interface DemoFormValues {
   firstName: string;
   lastName: string;
   email: string;
-  agreeToTerms: boolean;
+  phone: string;
+  organization: string;
+  role: string;
+  agreeToPrivacy: boolean;
 }
 
-/** Successful registration response. */
-export interface RegisterSuccess {
+export interface DemoSuccess {
   ok: true;
-  user: {
-    id: string;
-    username: string;
-    firstName: string;
-    email: string;
-  };
-  /** Whether the welcome email was sent (false if email isn't configured). */
-  emailSent?: boolean;
 }
 
 /** Error response — `fieldErrors` maps a field name to its first message. */
-export interface RegisterError {
+export interface DemoError {
   ok: false;
   message: string;
-  fieldErrors?: Partial<Record<keyof RegisterFormValues, string>>;
+  fieldErrors?: Partial<Record<keyof DemoFormValues, string>>;
 }
 
-export type RegisterResponse = RegisterSuccess | RegisterError;
+export type DemoResponse = DemoSuccess | DemoError;

@@ -51,7 +51,9 @@ export function rateLimit(
 
 /** Best-effort client IP from common proxy headers. */
 export function clientIp(request: Request): string {
+  const real = request.headers.get("x-real-ip");
+  if (real) return real.trim();
   const xff = request.headers.get("x-forwarded-for");
   if (xff) return xff.split(",")[0]!.trim();
-  return request.headers.get("x-real-ip") ?? "unknown";
+  return "unknown";
 }

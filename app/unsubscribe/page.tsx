@@ -1,27 +1,27 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
-import { Blobs } from "@/components/landing/Blobs";
-import { Nav } from "@/components/landing/Nav";
+import { SiteShell } from "@/components/site/SiteShell";
 import { UnsubscribeCard } from "@/components/unsubscribe/UnsubscribeCard";
 
 export const metadata: Metadata = {
-  title: "Unsubscribe — TORCHNOVA",
-  description: "Remove yourself from the TORCHNOVA waitlist.",
+  title: "Unsubscribe — TorchNova",
+  description: "Stop receiving emails from TorchNova.",
   robots: { index: false, follow: false },
 };
 
+// Kept for links in emails sent to the earlier mailing list.
 export default function UnsubscribePage() {
   return (
-    <div className="page">
-      <Blobs />
-      <Nav note="Unsubscribe" />
-      <div className="welcome-wrap">
-        <div style={{ maxWidth: "30rem", width: "100%" }}>
-          <Suspense fallback={<div className="card">Loading…</div>}>
-            <UnsubscribeCard />
-          </Suspense>
+    <SiteShell>
+      <section className="page-top message">
+        <div className="grid">
+          <div className="c1 message-body">
+            <Suspense fallback={<p className="page-lede">Loading…</p>}>
+              <UnsubscribeCard />
+            </Suspense>
+          </div>
         </div>
-      </div>
-    </div>
+      </section>
+    </SiteShell>
   );
 }

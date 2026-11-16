@@ -11,12 +11,17 @@ datasource db {
   provider  = "postgresql"
   url       = env("DATABASE_URL")
   directUrl = env("DIRECT_URL")
+  // "public" holds the original waitlist (users). "website" holds everything
+  // the product website collects, kept separate from the waitlist.
+  schemas   = ["public", "website"]
 }
 
 enum Role {
   FOUNDER
   INVESTOR
   BOTH
+
+  @@schema("public")
 }
 
 model User {
@@ -31,4 +36,25 @@ model User {
   createdAt        DateTime @default(now()) @map("created_at")
 
   @@map("users")
+  @@schema("public")
+}
+
+// Demo requests from the "Request a demo" form. Duplicate emails are allowed —
+// the same person may ask again for a different organization or later date.
+model DemoRequest {
+  id           String   @id @default(cuid())
+  firstName    String   @map("first_name")
+  lastName     String   @map("last_name")
+  email        String
+  phone        String
+  organization String
+  role         String
+  /// When the visitor accepted the Privacy Policy on the form.
+  consentAt    DateTime @map("consent_at")
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  @@index([email])
+  @@index([createdAt])
+  @@map("demo_requests")
+  @@schema("website")
 }

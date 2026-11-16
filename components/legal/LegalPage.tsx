@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
-import { Blobs } from "@/components/landing/Blobs";
-import { Nav } from "@/components/landing/Nav";
+import Link from "next/link";
+import { SiteShell } from "@/components/site/SiteShell";
 
 interface LegalPageProps {
   title: string;
@@ -11,14 +11,23 @@ interface LegalPageProps {
 /** Shared reading layout for legal pages (Terms, Privacy). */
 export function LegalPage({ title, lastUpdated, children }: LegalPageProps) {
   return (
-    <div className="page">
-      <Blobs />
-      <Nav note="Legal" />
-      <main className="legal">
-        <h1 className="legal-title">{title}</h1>
-        <p className="legal-updated">Last updated {lastUpdated}</p>
-        <div className="legal-prose">{children}</div>
-      </main>
-    </div>
+    <SiteShell>
+      <section className="page-top">
+        <div className="grid legal-grid">
+          <div className="c1 legal-head">
+            <h1 className="page-title">{title}</h1>
+            <p className="page-note">Last updated {lastUpdated}</p>
+          </div>
+          <div className="c4 legal-prose">
+            {children}
+            <p className="legal-back">
+              <Link href="/" className="text-link">
+                Back to TorchNova
+              </Link>
+            </p>
+          </div>
+        </div>
+      </section>
+    </SiteShell>
   );
 }
