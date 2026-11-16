@@ -27,7 +27,7 @@ export const metadata: Metadata = {
   icons: {
     icon: "/torchnova-logo-icon.svg",
     shortcut: "/torchnova-logo-icon.svg",
-    apple: "/torchnova-logo-icon.png",
+    apple: "/brand/apple-touch-icon.png",
   },
 };
 
