@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import Link from "next/link";
 import { SiteShell } from "@/components/site/SiteShell";
 import { WordField } from "@/components/home/WordField";
@@ -41,6 +42,8 @@ const PRINCIPLES = [
   { title: "Built to grow", body: "Secure foundations from day one, made to grow with the companies that use them." },
 ];
 
+const LEDE = "One place for the people, the plan and the work behind a new company.";
+
 function Masthead() {
   return (
     <div className="masthead" aria-hidden="true">
@@ -59,12 +62,18 @@ export default function HomePage() {
       <section className="hero">
         <div className="grid hero-grid">
           <p className="hero-tag c1">
-            Founders first.
+            <span className="ln"><span style={{ "--i": 0 } as React.CSSProperties}>Founders first.</span></span>
             <br />
-            Built in private.
+            <span className="ln"><span style={{ "--i": 1 } as React.CSSProperties}>Room to think.</span></span>
           </p>
           <h1 className="hero-lede c5">
-            One place for the people, the plan and the work behind a new company.
+            {LEDE.split(" ").map((w, i) => (
+              <Fragment key={i}>
+                <span className="w">
+                  <span style={{ "--i": i } as React.CSSProperties}>{w}</span>
+                </span>{" "}
+              </Fragment>
+            ))}
           </h1>
           <a href="#statement" className="hero-cue c5">
             Scroll
