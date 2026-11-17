@@ -1118,20 +1118,21 @@
   }
   .hero-grid {
     grid-template-rows: 1fr auto auto;
-    min-height: calc(100svh - 14vw - var(--nav-h));
-    /* four columns here: keep three of the varied lines inside them */
-    background-size: 1px 100%, 1px 70%, 1px 55%, 1px 80%, 1px 60%;
+    min-height: 64svh;
+    /* four columns here: three of the varied lines, all ending in the
+     * open space above the copy so none of them cross the words */
+    background-size: 1px calc(100% - 232px), 1px calc(100% - 300px), 1px calc(100% - 360px), 1px 0, 1px 0;
     background-position:
       calc(var(--pad) + var(--col) * 1) 0,
-      calc(var(--pad) + var(--col) * 2) 40%,
-      calc(var(--pad) + var(--col) * 3) 100%,
+      calc(var(--pad) + var(--col) * 2) 48px,
+      calc(var(--pad) + var(--col) * 3) 120px,
       -10px 0,
       -10px 0;
   }
   .hero-tag {
     grid-column: 1 / span 2;
     align-self: end;
-    margin-bottom: 32px;
+    margin-bottom: 18px;
     padding-left: 0;
   }
   .hero-lede {
@@ -1142,7 +1143,7 @@
   .hero-cue {
     grid-column: 3 / span 2;
     grid-row: 3;
-    margin-top: 40px;
+    margin-top: 24px;
   }
   .statement-stage {
     grid-template-columns: repeat(4, minmax(0, 1fr));
